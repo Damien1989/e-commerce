@@ -6,10 +6,12 @@ use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
 
 class RegisterType extends AbstractType
 {
@@ -18,36 +20,53 @@ class RegisterType extends AbstractType
         $builder
             ->add('firstname', TextType::class, [
                 'label' => 'Votre prénom',
+                'constraints' => new Length([
+                    'min' => 2,
+                    'max' => 30
+            ]),
                 'attr' => [
-                    'placeholder' => 'Saisir'
+                    'placeholder' => 'Saisir votre prénom'
                 ]
             ])
             ->add('lastname', TextType::class, [
                 'label' => 'Votre nom',
+                'constraints' => new Length ([
+                    'min' => 2,
+                    'max' => 30
+                ]),
                 'attr' => [
-                    'placeholder' => 'Saisir'
+                    'placeholder' => 'Saisir votre nom'
                 ]
             ])
             ->add('email', EmailType::class, [
                 'label' => 'Votre Email',
+                'constraints' => new Length([
+                    'min' => 2,
+                    'max' => 30
+                ]),
                 'attr' => [
-                    'placeholder' => 'Saisir'
+                    'placeholder' => 'Saisir votre adresse mail'
                 ]
             ])
-            ->add('password', PasswordType::class, [
+            ->add('password', RepeatedType::class, [
+                'type' => PasswordType::class,
+                'invalid_message' => 'Le mot de passe et la confirmation doivent être identiques !',
                 'label' => 'Mot de passe',
+                'required' => true,
+                'first_options' => [
+                    'label' => 'Mot de passe',
                 'attr' => [
                     'placeholder' => 'Saisir mot de passe',
                 ]
-            ])
-
-            ->add('password_confirm', PasswordType::class, [
-                'label' => 'Confirmez votre mot de passe',
-                'mapped' => false,
+            ],
+                'second_options' => [
+                    'label' => 'Mot de passe',
                 'attr' => [
-                    'placeholder' => 'Confirmez votre mot de passe'
+                    'placeholder' => 'Confirmer mot de passe',
+                ]
                 ]
             ])
+
             ->add('submit', SubmitType::class, [
                 'label' => "S'inscrire"
             ])
