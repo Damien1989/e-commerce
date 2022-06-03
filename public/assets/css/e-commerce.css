@@ -9,5 +9,33 @@
     bottom: 0;
     background-color: #dfeaff;
     padding: 25px;
+}
 
+.product-container {
+    margin-bottom: 130px;
+}
+
+.product-item h5 {
+    text-text-replace: uppercase;
+    font-size: 15px;
+    margin-bottom: 3px;
+}
+
+.product-item {
+    margin-top: 50px;
+}
+
+.product-item .product-subtitle {
+    font-size: 14px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.product-item .product-price {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.product-page-price {
+    font-size : 20px;
 }
