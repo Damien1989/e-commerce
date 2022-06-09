@@ -52,3 +52,14 @@ body {
     max-width: 600px;
     margin: 0 auto;
 }
+
+.form-check {
+    background-color: #8aaad7;
+    padding: 20px 65px;
+    margin-top: 7px;
+}
+
+.order-summary {
+    background-color: #205594;
+    padding: 20px;
+}
