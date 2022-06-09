@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Classe\Cart;
-use App\Entity\Product;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,20 +22,10 @@ class CartController extends AbstractController
     /**
      * @Route("/mon-panier", name="cart")
      */
-    public function index(RequestStack $stack, ProductRepository $productRepository): Response
+    public function index(Cart $cart, ProductRepository $productRepository): Response
     {
-        $cartComplete = [];
-
-        foreach ($stack->getSession()->get('cart') as $id => $quantity) {
-            $cartComplete[] = [
-                'product' => $productRepository->findOneBy(['id' => $id]),
-                'quantity' => $quantity
-            ];
-        }
-
-
         return $this->render('cart/index.html.twig', [
-            'cart' => $cartComplete
+            'cart' => $cart->getFull($productRepository)
         ]);
     }
 

@@ -2,22 +2,29 @@
 
 namespace App\Classe;
 
+use App\Repository\ProductRepository;
 use Symfony\Component\HttpFoundation\RequestStack;
+use App\Entity\Product;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-class Cart {
-
+class Cart
+{
     private $session;
+    private $Requeststack;
+
 
     public function __construct(RequestStack $stack)
     {
-            $this->session = $stack->getSession();
+        $this->session = $stack->getSession();
+        $this->requestStack = $stack;
+
     }
 
     public function add($id)
     {
         $cart = $this->session->get('cart', []);
 
-        if(!empty($cart[$id])) {
+        if (!empty($cart[$id])) {
             $cart[$id]++;
         } else {
             $cart[$id] = 1;
@@ -49,7 +56,7 @@ class Cart {
     public function decrease($id)
     {
         $cart = $this->session->get('cart', []);
-        if($cart[$id] > 1) {
+        if ($cart[$id] > 1) {
             $cart[$id]--;
         } else {
             unset($cart[$id]);
@@ -57,4 +64,16 @@ class Cart {
         return $this->session->set('cart', $cart);
     }
 
+    public function getFull(ProductRepository $productRepository)
+    {
+        $cartComplete = [];
+
+        foreach ($this->requestStack->getSession()->get('cart') as $id => $quantity) {
+            $cartComplete[] = [
+                'product' => $productRepository->findOneBy(['id' => $id]),
+                'quantity' => $quantity
+            ];
+        }
+        return $cartComplete;
+    }
 }
