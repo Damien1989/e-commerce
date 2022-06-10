@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Carrier;
 use App\Entity\Category;
+use App\Entity\Order;
 use App\Entity\Product;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -32,10 +33,6 @@ class DashboardController extends AbstractDashboardController
 
         return $this->redirect($url);
 
-        // Option 1. You can make your dashboard redirect to some common page of your backend
-        //
-         $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
-         // return $this->redirect($adminUrlGenerator->setController(OneOfYourCrudController::class)->generateUrl());
     }
 
     public function configureDashboard(): Dashboard
@@ -48,6 +45,7 @@ class DashboardController extends AbstractDashboardController
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::linkToCrud('Utilisateur', 'fa fa-user', User::class);
+        yield MenuItem::linkToCrud('Commandes', 'fa fa-shopping-cart', Order::class);
         yield MenuItem::linkToCrud('Catégories', 'fa fa-list', Category::class);
         yield MenuItem::linkToCrud('Produits', 'fa-brands fa-envira', Product::class);
         yield MenuItem::linkToCrud('Transporteur', 'fa-solid fa-truck', Carrier::class);
