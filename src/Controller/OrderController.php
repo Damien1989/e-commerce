@@ -45,7 +45,7 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @Route("/commande/recapitulatif", name="order_recap, methods={"POST"})
+     * @Route("/commande/recapitulatif", name="order_recap", methods={"POST"})
      */
     public function add(Cart $cart, ProductRepository $productRepository, Request $request): Response
     {
@@ -71,6 +71,8 @@ class OrderController extends AbstractController
             $delivery_content .= '<br/>' . $delivery->getCountry();
 
             $order = new Order();
+            $reference = $date->format('dmY').'-'.uniqid();
+            $order->setReference($reference);
             $order->setUser($this->getUser());
             $order->setCreatedAt($date);
             $order->setCarrierName($carriers->getName());
@@ -79,6 +81,8 @@ class OrderController extends AbstractController
             $order->setIsPaid(0);
 
             $this->entityManager->persist($order);
+
+            //enregistrer mes produits Order Details()
 
             foreach ($cart->getFull($productRepository) as $product) {
                 $orderDetails = new OrderDetails();
@@ -89,14 +93,17 @@ class OrderController extends AbstractController
                 $orderDetails->setTotal($product['product']->getPrice() * $product['quantity']);
                 $this->entityManager->persist($orderDetails);
             }
-             $this->entityManager->flush();
+              $this->entityManager->flush();
 
             return $this->render('order/add.html.twig', [
                 'cart' => $cart->getFull($productRepository),
                 'carrier' => $carriers,
-                'delivery' => $delivery_content
+                'delivery' => $delivery_content,
+                'reference' => $order->getReference()
             ]);
         }
+
+        //sinon renvoi vers le panier
         return $this->redirectToRoute('cart');
     }
 }
