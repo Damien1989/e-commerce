@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes commandes{% endblock %}
+
+{% block content %}
+    <a href="{{ path('account_address_add') }}" class="btn btn-info btn-sm float-right">Ajouter une adresse</a>
+    <h1>Mes commandes</h1>
+    <p>Bienvenue vous allez pouvoir gérer vos commandes. </p>
+    <a href="{{ path('account') }}">Retour</a>
+    <hr>
+    {% if app.user.orders|length == 0 %}
+        <p class="text-center">
+            Vous n'avez pas encore passé de commande.
+        </p>
+    {% else %}
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">First</th>
+                <th scope="col">Last</th>
+                <th scope="col">Handle</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for order in app.user.orders %}
+                <tr>
+                    <th scope="row">1</th>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}
