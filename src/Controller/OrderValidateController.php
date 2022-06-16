@@ -31,10 +31,12 @@ class OrderValidateController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
-        $cart->remove();
+        if ($order->getState() == 0) {
 
-        if (!$order->isIsPaid()) {
-            $order->setIsPaid(1);
+            $cart->remove();
+
+
+            $order->setState(1);
             $this->entityManager->flush();
         }
 
