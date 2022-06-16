@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Classe\Mail;
 use App\Entity\User;
 use App\Form\RegisterType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -24,25 +25,39 @@ class RegisterController extends AbstractController
      */
     public function index(Request $request, UserPasswordHasherInterface $hasher) :Response
     {
+        $notification = null;
+
         $user = new User();
         $form = $this->createForm(RegisterType::class, $user);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $user = $form->getData();
 
-            $password = $hasher->hashPassword($user,$user->getPassword());
+            $search_email = $this->entityManager->getRepository(User::class)->findOneByEmail($user->getEmail());
 
-            $user->setPassword($password);
+            if (!$search_email) {
 
-            $this->entityManager->persist($user);
-            $this->entityManager->flush();
+                $password = $hasher->hashPassword($user, $user->getPassword());
+
+                $user->setPassword($password);
+
+                $this->entityManager->persist($user);
+                $this->entityManager->flush();
+
+                $mail = new Mail();
+                $content = "Bonjour ".$user->getFirstName()."<br/>Bienvenue sur la première Boutique dédiée à la mode in France.<br /> Vive les tulipes";
+                $mail->send($user->getEmail(), $user->getFirstName(), 'Bienvenue sur ma boutique', $content);
+
+                $notification = " Votre inscription s'est bien déroulée. Vous pouvez vous connecter à votre compte.";
+            } else {
+                $notification = 'L\'email renseigné existe déjà.';
+            }
         }
-
         return $this->render('register/index.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'notification' => $notification
         ]);
     }
 }
