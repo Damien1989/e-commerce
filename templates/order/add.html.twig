@@ -8,7 +8,7 @@
 {% block title %}Valider mes commandes{% endblock %}
 
 {% block content %}
-    <h2>Mon récapitultif</h2>
+    <h2>Mon récapitulatif</h2>
     <p>Vérifiez vos infos avant la commande</p>
     <hr>
     <div class="row">
@@ -44,7 +44,6 @@
                         </div>
                         <div class="col-2 my-auto">
                             {{ ((product.product.price * product.quantity ) / 100) |number_format(2, ',', '.') }} €
-
                         </div>
                     </div>
                     {% set total = total + (product.product.price * product.quantity) %}

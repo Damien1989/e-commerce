@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Qui sommes-nous ? {% endblock %}
+
+{% block content %}
+
+    <p class="text-center"><strong>MA BOUTIQUE</strong> est un magasin de E-commerce crée en 2022 par <b>Damien Diaz</b>.<br>
+        Le principal de notre jeune entrepreneur est de vous proposer un site et un service de qualité. <br></p>
+        <hr>
+        <div class="img text-center">
+            <img src="{{ asset('assets/img/my-shop.webp') }}" class="img-fluid" alt="Ambition entrepreneur">
+    </div>
+    <p class="text-center mt-4"> Profitez des nombreuses réductions en <a href="{{ path('register') }}"> vous inscrivant </a> sur ce site ! </p>
+{% endblock %}
