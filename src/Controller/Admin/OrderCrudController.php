@@ -90,7 +90,6 @@ class OrderCrudController extends AbstractCrudController
         return [
             IdField::new('id'),
             DateTimeField::new('created_at', 'Passée le'),
-
             TextField::new('user.fullName', 'Utilisateur'),
             TextEditorField::new('delivery', 'Adresse de livraison')->onlyOnDetail(),
             TextField::new('carrierName', 'Transporteur'),
